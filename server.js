@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const process = require('process');
 const fs = require('fs');
+const ip = require('ip');
 
 // Obtenemos la ruta del proyecto y su apk.
 const proyecto = process.argv[2];
@@ -14,17 +15,11 @@ const apk = path.resolve(rutaProyecto);
 console.log(`RUTA:\n${apk}`);
 
 // Configuracion del servidor de express.
-const port = 3000;
-const wifi = process.argv[3]; 
-let ip = '';
-if(wifi == '-M'){
-  ip = '192.168.43.19';
-}else{
-  ip = '192.168.0.19';
-}
+const port = 5000;
+const direccionIP = ip.address();
 
 app.listen(port, ip, () => {
-  console.log(`\nDescarga el apk ingresando a: ${ip}:${port}`);
+  console.log(`\nDescarga el apk ingresando a: ${direccionIP}:${port}`);
 });
 
 //Ruta del servidor para descargar el apk desde el dispositivo.
@@ -41,7 +36,3 @@ app.get('/', (req, res) => {
 fs.watchFile(rutaProyecto, (curr, prev) => {
   console.log('\nEl apk ha sido modificado');
 });
-
-
-
-
